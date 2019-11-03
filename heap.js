@@ -7,52 +7,52 @@ class Heap extends HeapInterface {
 
   constructor(comparatorFn) {
     super();
-    this.arr = [];
-    this.size = 0;
+    this._arr = [];
+    this._size = 0;
     this.comparatorFn = comparatorFn || Heap.defaultComparatorFn;
   }
 
   push(value) {
-    this.arr[this.size] = value;
-    this.size++;
-    this.moveUp_();
+    this._arr[this._size] = value;
+    this._size++;
+    this._moveUp();
   }
 
-  moveUp_() {
-    let index = this.size - 1;
+  _moveUp() {
+    let index = this._size - 1;
     while (
       index > 0 &&
-      this.compare_(this.arr[index], this.getParentValue_(index)) < 0
+      this._compare(this._arr[index], this._getParentValue(index)) < 0
     ) {
-      const parentIndex = this.getParentIndex_(index);
-      this.swap_(index, parentIndex);
+      const parentIndex = this._getParentIndex(index);
+      this._swap(index, parentIndex);
       index = parentIndex;
     }
   }
 
-  compare_(a, b) {
+  _compare(a, b) {
     return this.comparatorFn(a, b);
   }
 
-  getParentValue_(index) {
-    return this.arr[this.getParentIndex_(index)];
+  _getParentValue(index) {
+    return this._arr[this._getParentIndex(index)];
   }
 
-  getParentIndex_(index) {
+  _getParentIndex(index) {
     return (index - 1) >> 1;
   }
 
-  swap_(first, second) {
-    let tmp = this.arr[first];
-    this.arr[first] = this.arr[second];
-    this.arr[second] = tmp;
+  _swap(first, second) {
+    let tmp = this._arr[first];
+    this._arr[first] = this._arr[second];
+    this._arr[second] = tmp;
   }
 
   pop() {
-    if (this.size > 0) {
+    if (this._size > 0) {
       const top = this.peek();
-      this.bringUpLast_();
-      this.moveDown_();
+      this._bringUpLast();
+      this._moveDown();
       return top;
     }
     return null;
@@ -60,60 +60,64 @@ class Heap extends HeapInterface {
 
   peek() {
     if (!this.isEmpty()) {
-      return this.arr[0];
+      return this._arr[0];
     }
     return null;
   }
 
   isEmpty() {
-    return this.size === 0;
+    return this._size === 0;
   }
 
-  bringUpLast_() {
-    this.arr[0] = this.arr[this.size - 1];
-    this.arr[this.size - 1] = null;
-    this.size--;
+  _bringUpLast() {
+    this._arr[0] = this._arr[this._size - 1];
+    this._arr[this._size - 1] = null;
+    this._size--;
   }
 
-  moveDown_() {
+  _moveDown() {
     let index = 0;
-    while (index < this.size) {
-      const leftIndex = this.getLeft_(index);
-      const hasLeftChild = this.isWithinBounds_(leftIndex);
-      const rightIndex = this.getRight_(index);
-      const hasRightChild = this.isWithinBounds_(rightIndex);
+    while (index < this._size) {
+      const leftIndex = this._getLeft(index);
+      const hasLeftChild = this._isWithinBounds(leftIndex);
+      const rightIndex = this._getRight(index);
+      const hasRightChild = this._isWithinBounds(rightIndex);
 
       if (
         !hasLeftChild ||
-        this.compare_(this.arr[index], this.arr[leftIndex]) < 0
+        this._compare(this._arr[index], this._arr[leftIndex]) < 0
       ) {
         break;
       }
 
       const childIndex = !hasRightChild
         ? leftIndex
-        : this.getChild_(leftIndex, rightIndex);
-      this.swap_(index, childIndex);
+        : this._getChild(leftIndex, rightIndex);
+      this._swap(index, childIndex);
       index = childIndex;
     }
   }
 
-  getLeft_(index) {
+  _getLeft(index) {
     return (index << 1) + 1;
   }
 
-  getRight_(index) {
+  _getRight(index) {
     return (index << 1) + 2;
   }
 
-  getChild_(leftIndex, rightIndex) {
-    return this.compare_(this.arr[leftIndex], this.arr[rightIndex]) < 0
+  _getChild(leftIndex, rightIndex) {
+    return this._compare(this._arr[leftIndex], this._arr[rightIndex]) < 0
       ? leftIndex
       : rightIndex;
   }
 
-  isWithinBounds_(index) {
-    return index >= 0 && index < this.size;
+  _isWithinBounds(index) {
+    return index >= 0 && index < this._size;
+  }
+
+  size() {
+    return this._size;
   }
 }
 

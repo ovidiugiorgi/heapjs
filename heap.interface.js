@@ -15,6 +15,10 @@ class HeapInterface {
   isEmpty() {
     // noop
   }
+
+  size() {
+    // noop
+  }
 }
 
 module.exports = HeapInterface;

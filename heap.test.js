@@ -124,6 +124,27 @@ describe("default comparator - minimum", () => {
       expect(heap.peek()).toBe(5);
     });
   });
+
+  describe("size", () => {
+    test("should return 0 when empty", () => {
+      expect(heap.size()).toBe(0);
+    });
+
+    test("should return the correct number when not emty", () => {
+      heap.push(9);
+      heap.push(5);
+      heap.push(11);
+      expect(heap.size()).toBe(3);
+      heap.pop();
+      heap.pop();
+      expect(heap.size()).toBe(1);
+      heap.pop();
+      expect(heap.size()).toBe(0);
+      heap.pop();
+      heap.pop();
+      expect(heap.size()).toBe(0);
+    });
+  });
 });
 
 describe("custom comparator - maximum", () => {
