@@ -1,7 +1,7 @@
-const HeapInterface = require("./heap_interface");
+const HeapInterface = require("./heap.interface");
 
 class Heap extends HeapInterface {
-  get defaultComparatorFn() {
+  static get defaultComparatorFn() {
     return (a, b) => a - b;
   }
 
@@ -9,7 +9,7 @@ class Heap extends HeapInterface {
     super();
     this.arr = [];
     this.size = 0;
-    this.comparatorFn = comparatorFn || this.defaultComparatorFn;
+    this.comparatorFn = comparatorFn || Heap.defaultComparatorFn;
   }
 
   push(value) {
@@ -51,7 +51,7 @@ class Heap extends HeapInterface {
   pop() {
     if (this.size > 0) {
       const top = this.peek();
-      this.bringUpLastAdded_();
+      this.bringUpLast_();
       this.moveDown_();
       return top;
     }
@@ -69,7 +69,7 @@ class Heap extends HeapInterface {
     return this.size === 0;
   }
 
-  bringUpLastAdded_() {
+  bringUpLast_() {
     this.arr[0] = this.arr[this.size - 1];
     this.arr[this.size - 1] = null;
     this.size--;
@@ -79,22 +79,18 @@ class Heap extends HeapInterface {
     let index = 0;
     while (index < this.size) {
       const leftIndex = this.getLeft_(index);
+      const hasLeftChild = this.isWithinBounds_(leftIndex);
       const rightIndex = this.getRight_(index);
-      const isLeftBounded = this.isWithinBounds_(leftIndex);
-      const isRightBounded = this.isWithinBounds_(rightIndex);
+      const hasRightChild = this.isWithinBounds_(rightIndex);
 
       if (
-        (!isLeftBounded ||
-          this.compare_(this.arr[index], this.arr[leftIndex]) < 0) &&
-        (!isRightBounded ||
-          this.compare_(this.arr[index], this.arr[rightIndex] < 0))
+        !hasLeftChild ||
+        this.compare_(this.arr[index], this.arr[leftIndex]) < 0
       ) {
         break;
       }
 
-      const childIndex = !isLeftBounded
-        ? rightIndex
-        : !isRightBounded
+      const childIndex = !hasRightChild
         ? leftIndex
         : this.getChild_(leftIndex, rightIndex);
       this.swap_(index, childIndex);

@@ -78,6 +78,24 @@ describe("default comparator - minimum", () => {
       expect(heap.pop()).toBe(11);
       expect(heap.pop()).toBe(15);
       expect(heap.pop()).toBe(16);
+      heap.push(2);
+      heap.push(9);
+      heap.push(5);
+      heap.push(3);
+      expect(heap.pop()).toBe(2);
+      expect(heap.pop()).toBe(3);
+      expect(heap.pop()).toBe(5);
+      expect(heap.pop()).toBe(9);
+      heap.push(8);
+      heap.push(15);
+      heap.push(12);
+      heap.push(15);
+      heap.push(15);
+      expect(heap.pop()).toBe(8);
+      expect(heap.pop()).toBe(12);
+      expect(heap.pop()).toBe(15);
+      expect(heap.pop()).toBe(15);
+      expect(heap.pop()).toBe(15);
     });
   });
 
