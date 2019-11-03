@@ -7,10 +7,12 @@ Simple [Heap](<https://en.wikipedia.org/wiki/Heap_(data_structure)>) implementat
 - push: O(logN)
 - peek: O(1)
 - pop: O(logN)
+- isEmpty: O(1)
 
-## Custom Comparator
+## Comparator
 
-The constructor accepts a custom comparator as a function:
+- default configuration is for a _Min-Heap_.
+- if you need let's say a Max-Heap, you can pass a custom comparator function to the constructor:
 
 ```
 const heap = new Heap((a, b) => (-1) * (a - b));
