@@ -14,8 +14,8 @@ Simple [Heap](<https://en.wikipedia.org/wiki/Heap_(data_structure)>) implementat
 - default configuration is for a _Min-Heap_.
 - if you need let's say a Max-Heap, you can pass a custom comparator function to the constructor:
 
-```
-const heap = new Heap((a, b) => (-1) * (a - b));
+```javascript
+const heap = new Heap((a, b) => -1 * (a - b));
 heap.push(7);
 heap.push(5);
 heap.push(10);
