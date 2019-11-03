@@ -97,6 +97,19 @@ describe("default comparator - minimum", () => {
       expect(heap.pop()).toBe(15);
       expect(heap.pop()).toBe(15);
     });
+
+    test("should return the minimum elements for randomized stream", () => {
+      let size = 10000;
+      const range = 100000;
+      const list = getRandomIntList(size, -range, range);
+      list.forEach(i => heap.push(i));
+      list.sort((a, b) => a - b);
+      const heapList = [];
+      while (size--) {
+        heapList.push(heap.pop());
+      }
+      checkLists(list, heapList);
+    });
   });
 
   describe("peek", () => {
@@ -148,8 +161,13 @@ describe("default comparator - minimum", () => {
 });
 
 describe("custom comparator - maximum", () => {
+  const maxComparator = (a, b) => {
+    if (a === b) return 0;
+    if (a < b) return 1;
+    return -1;
+  };
+
   beforeEach(() => {
-    const maxComparator = (a, b) => -1 * (a - b);
     heap = new Heap(maxComparator);
   });
 
@@ -177,4 +195,50 @@ describe("custom comparator - maximum", () => {
     expect(heap.pop()).toBe(51);
     expect(heap.pop()).toBe(5);
   });
+
+  test("should return the maximum elements for negative ones", () => {
+    heap.push(-5);
+    heap.push(-51);
+    heap.push(-1000);
+    heap.push(-77);
+    expect(heap.pop()).toBe(-5);
+    expect(heap.pop()).toBe(-51);
+    expect(heap.pop()).toBe(-77);
+    expect(heap.pop()).toBe(-1000);
+  });
+
+  test("should return the maximum elements for randomized stream", () => {
+    let size = 10000;
+    const range = 100000;
+    const list = getRandomIntList(size, -range, range);
+    list.forEach(i => heap.push(i));
+    list.sort(maxComparator);
+    const heapList = [];
+    while (size--) {
+      heapList.push(heap.pop());
+    }
+    checkLists(list, heapList);
+  });
 });
+
+function checkLists(first, second) {
+  expect(first.length).toBe(second.length);
+
+  for (let i = 0; i < first.length; i++) {
+    expect(first[i]).toBe(second[i]);
+  }
+}
+
+function getRandomIntList(size, min, max) {
+  const list = [];
+  for (let i = 0; i < size; i++) {
+    list.push(getRandomInt(min, max));
+  }
+  return list;
+}
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

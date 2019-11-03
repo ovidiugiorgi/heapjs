@@ -84,8 +84,10 @@ class Heap extends HeapInterface {
       const hasRightChild = this._isWithinBounds(rightIndex);
 
       if (
-        !hasLeftChild ||
-        this._compare(this._arr[index], this._arr[leftIndex]) < 0
+        (!hasLeftChild ||
+          this._compare(this._arr[index], this._arr[leftIndex]) < 0) &&
+        (!hasRightChild ||
+          this._compare(this._arr[index], this._arr[rightIndex]) < 0)
       ) {
         break;
       }
