@@ -1,0 +1,20 @@
+{
+  "name": "heapjs",
+  "version": "1.0.0",
+  "description": "Simple Heap implementation for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [
+    "heap",
+    "data-structures",
+    "priority-queue",
+    "trees"
+  ],
+  "author": "Ovidiu Giorgi",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^24.9.0"
+  }
+}
